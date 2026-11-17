@@ -215,6 +215,19 @@ code { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: .88em;
 <div class="finding">
   <span class="sev should">Conviene corregir</span>
   <div>
+    <h3>El calendario marca casi todos los días “con oferta” y perdió los estados del diseño</h3>
+    <div class="pair" style="margin:8px 0 10px;">
+      <figure><figcaption><b>Figma</b> · 02 · Modal de fecha</figcaption><div class="shot" style="max-height:360px;"><img src="shots/fig-datepicker.png" alt="Modal de fecha en el diseño de Figma"></div></figure>
+      <figure><figcaption><b>En vivo</b> · date picker</figcaption><div class="shot" style="max-height:360px;"><img src="shots/live-datepicker.webp" alt="Date picker del build en vivo"></div></figure>
+    </div>
+    <p>En el diseño la leyenda tiene tres estados — <b>disponible</b> (negro), <b>ocupado</b> (gris, tachado) y <b>con oferta</b> (punto verde) — y las ofertas son pocas y señaladas (el 2, el 13, el 23). En vivo casi todos los días traen punto verde, ningún día aparece como ocupado y la leyenda solo dice “on offer”. Si todo está en oferta, la señal deja de significar algo y la promesa de “disponibilidad en tiempo real” pierde credibilidad. Detalles menores: faltan las etiquetas “AÑO / MES” junto a los chips, el día seleccionado (14 nov) cae dentro del rango deshabilitado del pasado, hay un día resaltado en gris (21 dic) que no corresponde a hoy, y “Dónde” dice “All cities” aquí pero “3 cities” en el Home.</p>
+    <p class="fix">Conectar los tres estados reales del calendario con su leyenda completa; puntos verdes solo en fechas con oferta real; agregar un botón de <b>resetear / limpiar fecha</b> cuando ya hay una elegida (hoy solo existe “I don't have a date yet” y Apply, acordado con el equipo); unificar el label de “Dónde”; y verificar el día resaltado que no es hoy.</p>
+  </div>
+</div>
+
+<div class="finding">
+  <span class="sev should">Conviene corregir</span>
+  <div>
     <h3>Las tarjetas perdieron el aforo y el conteo de reseñas</h3>
     <p>En el diseño cada tarjeta trae “hasta [350] invitados” y la calificación con su conteo (“4.9 (23)”) — dos de los tres datos con los que una pareja filtra venues. En vivo solo aparecen ciudad + número de calificación.</p>
     <p class="fix">Agregar el aforo (“hasta N invitados”) a la línea de datos y el conteo de reseñas junto a la calificación.</p>
