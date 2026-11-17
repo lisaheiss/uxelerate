@@ -1,0 +1,365 @@
+<title>Voguex Build Audit</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+/* Layout: single reading column, evidence pairs 2-up, findings as severity-striped rows */
+:root {
+  --bg: #faf8f4;
+  --surface: #ffffff;
+  --fg: #211d18;
+  --muted: #6e6659;
+  --line: #e5dfd3;
+  --accent: #96794a;
+  --blocker: #b3392e;
+  --blocker-bg: #f9e9e7;
+  --should: #9a6a1f;
+  --should-bg: #f7eedd;
+  --polish: #5c6670;
+  --polish-bg: #eceef0;
+  --good: #3c7a4e;
+  --good-bg: #e7f1ea;
+  --font-display: "Cormorant Garamond", Georgia, "Times New Roman", serif;
+  --font-body: Inter, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #171410; --surface: #201c17; --fg: #ece7de; --muted: #a39a8a; --line: #38322a;
+  --accent: #c3a269; --blocker: #e2695e; --blocker-bg: #3a211e; --should: #d9a24a; --should-bg: #352a18;
+  --polish: #9aa6b1; --polish-bg: #262b30; --good: #7cb98e; --good-bg: #1e2f24; color-scheme: dark;
+} }
+:root[data-theme="dark"] {
+  --bg: #171410; --surface: #201c17; --fg: #ece7de; --muted: #a39a8a; --line: #38322a;
+  --accent: #c3a269; --blocker: #e2695e; --blocker-bg: #3a211e; --should: #d9a24a; --should-bg: #352a18;
+  --polish: #9aa6b1; --polish-bg: #262b30; --good: #7cb98e; --good-bg: #1e2f24; color-scheme: dark;
+}
+body {
+  background: var(--bg); color: var(--fg);
+  font-family: var(--font-body); font-size: 15px; line-height: 1.6; margin: 0;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 0 72px;
+}
+.wrap { max-width: 980px; margin: 0 auto; }
+header.page { padding-block: 56px 36px; border-bottom: 1px solid var(--line); }
+.eyebrow { font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: var(--accent); font-weight: 600; }
+h1 { font-family: var(--font-display); font-weight: 600; font-size: clamp(34px, 5vw, 52px); line-height: 1.08; margin: 10px 0 14px; text-wrap: balance; }
+.lede { max-width: 62ch; color: var(--muted); margin: 0 0 22px; }
+.meta { display: flex; flex-wrap: wrap; gap: 8px 22px; font-size: 13px; color: var(--muted); }
+.meta b { color: var(--fg); font-weight: 600; }
+.meta a { color: var(--accent); }
+.counts { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 24px; }
+.count { display: flex; align-items: baseline; gap: 8px; border: 1px solid var(--line); background: var(--surface); border-radius: 8px; padding: 10px 14px; }
+.count .n { font-size: 24px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.count .l { font-size: 12px; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); }
+.count.blocker .n { color: var(--blocker); }
+.count.should .n { color: var(--should); }
+.count.polish .n { color: var(--polish); }
+h2 { font-family: var(--font-display); font-weight: 600; font-size: 30px; margin: 56px 0 6px; text-wrap: balance; }
+h2 .no { color: var(--accent); margin-right: 6px; }
+.secnote { color: var(--muted); margin: 0 0 20px; max-width: 70ch; }
+.pair { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 18px 0 22px; }
+.pair figure { margin: 0; min-width: 0; }
+.pair figcaption { font-size: 12px; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); margin-bottom: 7px; }
+.pair figcaption b { color: var(--fg); }
+.shot { border: 1px solid var(--line); border-radius: 8px; background: var(--surface); max-height: 540px; overflow-y: auto; }
+.shot img { display: block; width: 100%; max-width: 100%; }
+.pair .hint { font-size: 12px; color: var(--muted); margin-top: 6px; }
+.finding { display: grid; grid-template-columns: 92px 1fr; gap: 14px; padding: 16px 0; border-top: 1px solid var(--line); }
+.finding:last-of-type { border-bottom: 1px solid var(--line); }
+.sev { font-size: 11px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; border-radius: 99px; padding: 3px 10px; height: fit-content; width: fit-content; }
+.sev.blocker { color: var(--blocker); background: var(--blocker-bg); }
+.sev.should { color: var(--should); background: var(--should-bg); }
+.sev.polish { color: var(--polish); background: var(--polish-bg); }
+.finding h3 { margin: 0 0 4px; font-size: 15.5px; font-weight: 650; }
+.finding p { margin: 0 0 6px; color: var(--muted); max-width: 72ch; }
+.finding p:last-child { margin-bottom: 0; }
+.finding .fix { color: var(--fg); }
+.finding .fix::before { content: "Fix: "; font-weight: 650; color: var(--good); }
+.quote { font-size: 13.5px; border-left: 3px solid var(--line); padding: 2px 0 2px 12px; margin: 8px 0; color: var(--muted); }
+.quote b { color: var(--fg); font-weight: 600; }
+.goods { list-style: none; margin: 14px 0 0; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 8px 24px; }
+.goods li { padding-left: 22px; position: relative; color: var(--muted); }
+.goods li::before { content: "✓"; position: absolute; left: 0; color: var(--good); font-weight: 700; }
+footer.page { margin-top: 64px; padding-top: 20px; border-top: 1px solid var(--line); font-size: 13px; color: var(--muted); }
+code { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: .88em; background: var(--polish-bg); border-radius: 4px; padding: 1px 5px; }
+@media (max-width: 720px) {
+  .pair { grid-template-columns: 1fr; }
+  .finding { grid-template-columns: 1fr; gap: 6px; }
+  .goods { grid-template-columns: 1fr; }
+}
+</style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Inter:wght@400;500;650;700&display=swap">
+
+<div class="wrap">
+
+<header class="page">
+  <div class="eyebrow">Voguex · design-to-build QA</div>
+  <h1>Voguex Build Audit</h1>
+  <p class="lede">Differences worth correcting between the new live build and the approved Figma experience. Four screens audited on the English build: Home, Results, Venue page, and the Hold checkout. Overall the build is faithful to the design's structure and flow — the gaps are concentrated in content, data binding, and trust-sensitive copy.</p>
+  <div class="meta">
+    <span><b>Live build</b> · <a href="https://strange-borg.5-189-169-17.plesk.page/" target="_blank" rel="noopener">strange-borg.5-189-169-17.plesk.page</a></span>
+    <span><b>Reference</b> · <a href="https://www.figma.com/design/dIPMn1qevZiu8wV8mMJDJk/VOGUEX-%C2%B7-Dise%C3%B1o" target="_blank" rel="noopener">VOGUEX · Diseño</a>, pages “-- CAPA 1 final”</span>
+    <span><b>Audited</b> · 17 Nov 2026</span>
+  </div>
+  <div class="counts">
+    <div class="count blocker"><span class="n">5</span><span class="l">Fix before launch</span></div>
+    <div class="count should"><span class="n">13</span><span class="l">Should fix</span></div>
+    <div class="count polish"><span class="n">5</span><span class="l">Polish</span></div>
+  </div>
+</header>
+
+<h2><span class="no">0</span>Global issues</h2>
+<p class="secnote">These appear on several screens; fixing them once clears most of the list.</p>
+
+<div class="finding">
+  <span class="sev blocker">Blocker</span>
+  <div>
+    <h3>Design placeholder brackets shipped as literal text</h3>
+    <p>In the Figma file, square brackets mark “replace with live data”. The build renders them verbatim across every screen: <code>[2] available that day</code>, ratings as <code>★ [0]</code> and <code>[4.8]</code>, <code>[24] couples booked with Voguex this month</code>, testimonial names <code>[Daniela Molgora]</code>, and the checkout placeholder <code>[Mariana] and [Diego]</code>.</p>
+    <p class="fix">Strip every bracket and bind the real value; where no real value exists yet (e.g. follower count was <code>[XX.X mil]</code> in design), hide the element rather than show the placeholder.</p>
+  </div>
+</div>
+
+<div class="finding">
+  <span class="sev blocker">Blocker</span>
+  <div>
+    <h3>Default search date is in the past</h3>
+    <p>Hero, Results and the Venue page all come preloaded with <b>Sat, 14 Nov 2026</b> — three days ago. A visitor lands on a search for a date that can no longer be booked. The design ships the date field empty (“Elige la fecha si ya la sabes” / “Choose a date if you know it”).</p>
+    <p class="fix">No preset date on the hero per design; date picker minimum = today; never persist a past date in the session.</p>
+  </div>
+</div>
+
+<div class="finding">
+  <span class="sev should">Should fix</span>
+  <div>
+    <h3>Two different discount promises</h3>
+    <p>Home step 1 says “Up to <b>14%</b> off on selected dates”; the design says up to <b>50%</b> (“ofertas de hasta 50% en fechas seleccionadas”), and the build's own Results tip card also says “weekday offers up to <b>-50%</b>”. One of these is wrong.</p>
+    <p class="fix">Confirm the real maximum with the venue group and use the same figure everywhere (home step 1, results tip, price badges).</p>
+  </div>
+</div>
+
+<div class="finding">
+  <span class="sev should">Should fix</span>
+  <div>
+    <h3>Language mixing on the English build</h3>
+    <p>The EN page renders Spanish review content in the testimonial cards, and venue descriptions carry untranslated fragments. The Spanish locale wasn't part of this audit's screenshots — it needs the same pass.</p>
+    <p class="fix">All visible content follows the active locale; run this same checklist on the ES build.</p>
+  </div>
+</div>
+
+<div class="finding">
+  <span class="sev polish">Polish</span>
+  <div>
+    <h3>Trust-bar copy drifts between screens</h3>
+    <p>Home: “+1,000 group weddings”. Venue page: “+1000 weddings by the group” (no separator, different phrasing). Design intent: weddings held by the venue group — “+1,000 weddings by the group”.</p>
+    <p class="fix">One phrasing, with the thousands separator, reused on both screens.</p>
+  </div>
+</div>
+
+<h2><span class="no">1</span>Home</h2>
+<div class="pair">
+  <figure><figcaption><b>Figma</b> · 01 · Home</figcaption><div class="shot"><img src="shots/fig-home.png" alt="Figma design of the Voguex home page"></div></figure>
+  <figure><figcaption><b>Live</b> · strange-borg…plesk.page</figcaption><div class="shot"><img src="shots/live-home.webp" alt="Screenshot of the live Voguex home page"></div></figure>
+</div>
+<p class="hint"></p>
+
+<div class="finding">
+  <span class="sev blocker">Blocker</span>
+  <div>
+    <h3>Testimonials are raw venue reviews — including a damning one</h3>
+    <p>“Couples who got married with Voguex” renders what look like scraped Google reviews of the venues: in Spanish on the EN page, without the design's five-star row, and the third card is a long, furious safety complaint, shown verbatim with raw <code>&lt;br&gt;</code> tags as text:</p>
+    <p class="quote">“<b>UNA VERDADERA DECEPCIÓN Y EXPERIENCIA INSEGURA.</b> No lo recomiendo… INTENTARON ABRIR NUESTRA HABITACIÓN EN LA MADRUGADA…”</p>
+    <p>This is the single most damaging thing on the page — a conversion-killer sitting in the social-proof section. The design calls for three short, curated quotes about the <i>booking experience</i> (“booked online on a Sunday night”, “planned everything from Chicago”, “secured the venue with 10%”), each with a 5-star row, couple names, venue and year.</p>
+    <p class="fix">Replace with the curated quotes from the design (the support team has these stories in WhatsApp, per the design's note); add the star row; never pipe raw venue reviews into this section.</p>
+  </div>
+</div>
+
+<div class="finding">
+  <span class="sev blocker">Blocker</span>
+  <div>
+    <h3>Hero trust line is cut off mid-sentence</h3>
+    <p>Reads “+1,000 group weddings · 24 bookings this month · <b>Payment protected with</b>” — the word <b>Stripe</b> is missing. A truncated trust claim reads as broken exactly where credibility matters most.</p>
+    <p class="fix">“Payment protected with Stripe”, matching the design and the footer.</p>
+  </div>
+</div>
+
+<div class="finding">
+  <span class="sev should">Should fix</span>
+  <div>
+    <h3>Venue cards lost their price framing and context line</h3>
+    <p>Design cards read: type + distance (“Hacienda · Huaxtla, 30 min from GDL · View map”), “<b>From</b> $35,500 MXN” with an “up to -50%” badge, and the footnote “venue only · <b>final price depends on your date</b>”. Live cards show a bare “$ 245,000 MXN” with no “From”, no badge, only “Zapopan, Jalisco”, and the footnote mistranslated as “Venue only <b>or final package</b> depending on your date” — which changes the meaning from “price varies by date” to “what you get varies”.</p>
+    <p class="fix">Restore “From” + discount badge + type/distance line; footnote: “venue only · final price depends on your date”.</p>
+  </div>
+</div>
+
+<div class="finding">
+  <span class="sev should">Should fix</span>
+  <div>
+    <h3>Zero-star ratings on display</h3>
+    <p>Antiguo Colegio de San Diego and Los Hilos show “★ [0]” on Home and Results. The design never shows a rating without reviews (always “4.9 (23)”-style, rating with count).</p>
+    <p class="fix">Hide the rating element until a venue has reviews; when shown, pair it with the review count.</p>
+  </div>
+</div>
+
+<div class="finding">
+  <span class="sev should">Should fix</span>
+  <div>
+    <h3>Instagram grid: two duplicate photos, two near-blank frames</h3>
+    <p>The design shows four distinct venue photos. Live shows the same couple photo twice plus two washed-out, almost-white frames that read as broken images. The follower count (28.6k) is correctly bound — good.</p>
+    <p class="fix">Four distinct venue/wedding photos per design.</p>
+  </div>
+</div>
+
+<div class="finding">
+  <span class="sev polish">Polish</span>
+  <div>
+    <h3>Occupied state leaks into the home carousel</h3>
+    <p>The fourth card (Finca by Alofa) appears grayed with “Occupied on your date”. In the design, occupied treatment belongs to Results; the home carousel is inspirational and shows every venue at its best. Also: the location default reads “3 cities” where the design says “Guadalajara and nearby”.</p>
+    <p class="fix">Home carousel always shows the standard card; label the default region per design.</p>
+  </div>
+</div>
+
+<h2><span class="no">2</span>Results</h2>
+<div class="pair">
+  <figure><figcaption><b>Figma</b> · 04 · Resultados (con fecha)</figcaption><div class="shot"><img src="shots/fig-results.png" alt="Figma design of the results page with a chosen date"></div></figure>
+  <figure><figcaption><b>Live</b> · Venues for Sat, 14 Nov 2026</figcaption><div class="shot"><img src="shots/live-results.webp" alt="Screenshot of the live results page"></div></figure>
+</div>
+
+<div class="finding">
+  <span class="sev should">Should fix</span>
+  <div>
+    <h3>Cards dropped guest capacity and review counts</h3>
+    <p>Design cards carry “up to [350] guests” and the rating with its count (“4.9 (23)”) — two of the three facts a couple filters venues by. Live cards show only city + rating number.</p>
+    <p class="fix">Add capacity (“up to N guests”) to the card meta line and review count next to the rating.</p>
+  </div>
+</div>
+
+<div class="finding">
+  <span class="sev polish">Polish</span>
+  <div>
+    <h3>Results keeps the full home header</h3>
+    <p>The design gives Results a slimmer header — logo with “VENUES · MÉXICO” wordmark, “Explore venues” underlined as active, no category tab bar. Live reuses the entire home header including the “Venue only / Concept venues / Beyond the venue” tabs.</p>
+    <p class="fix">Optional: adopt the slim results header; if the tabs stay, mark the active state consistently.</p>
+  </div>
+</div>
+
+<div class="finding">
+  <span class="sev polish">Polish</span>
+  <div>
+    <h3>“Voguex” watermark visible on occupied-card photos</h3>
+    <p>Grayscale occupied cards show a faint “Voguex” watermark overlay not present in the design. Verify it's an intentional image policy and not a placeholder asset.</p>
+    <p class="fix">Confirm intent; if watermarking stays, keep it subtle and consistent across all photos, not only occupied ones.</p>
+  </div>
+</div>
+
+<h2><span class="no">3</span>Venue page</h2>
+<div class="pair">
+  <figure><figcaption><b>Figma</b> · 05 · Ficha de venue</figcaption><div class="shot"><img src="shots/fig-venue.png" alt="Figma design of the venue detail page"></div></figure>
+  <figure><figcaption><b>Live</b> · Antiguo Colegio de San Diego</figcaption><div class="shot"><img src="shots/live-venue.webp" alt="Screenshot of the live venue detail page"></div></figure>
+</div>
+
+<div class="finding">
+  <span class="sev blocker">Blocker</span>
+  <div>
+    <h3>The page contradicts itself on what the rental includes</h3>
+    <p>“Your venue rental includes” lists <b>Valet parking ✓</b>. Thirty lines later, “RENTAL DOES NOT INCLUDE” lists <b>Valet parking services</b>. On a page that takes money, a contradiction about what's included is a refund dispute waiting to happen.</p>
+    <p class="fix">Make the checklist the single source of truth per venue; reconcile valet parking (and re-verify every item) against the venue contract.</p>
+  </div>
+</div>
+
+<div class="finding">
+  <span class="sev should">Should fix</span>
+  <div>
+    <h3>“The venue” is a raw content dump, not the curated description</h3>
+    <p>The design calls for a three-line curated description. Live pastes the vendor's full sheet: “RENTAL INCLUDES / RENTAL DOES NOT INCLUDE” bullet lists that duplicate (and contradict) the checklist module above, plus unstructured contract details — $25,000 MXN security deposit, overtime until 3:00 AM, two setup days. There's also a typo: “Basic <b>lightning</b> in the rectangular ballrooms” → <b>lighting</b>.</p>
+    <p class="fix">Trim the prose to the curated description; move deposit/overtime/setup into the structured includes module or a “Good to know” block; fix the typo.</p>
+  </div>
+</div>
+
+<div class="finding">
+  <span class="sev should">Should fix</span>
+  <div>
+    <h3>Title row stripped of its key facts</h3>
+    <p>Design: “★ 4.9 · 12 reviews | Huaxtla, Jalisco · 30 min from Guadalajara | Up to [300] guests | Own chapel”. Live shows only “★ 4.9 Zona Centro Guadalajara, Jalisco” — no review count, no capacity, no signature feature.</p>
+    <p class="fix">Restore the full fact row: rating · review count | location · distance | capacity | signature feature.</p>
+  </div>
+</div>
+
+<div class="finding">
+  <span class="sev should">Should fix</span>
+  <div>
+    <h3>Gallery layout broken and “See all photos” missing</h3>
+    <p>Design: one hero image + four thumbnails in a tight grid, with a “See all 11 photos” button. Live: four images with a visible empty gap in the grid and no way to see the rest of the gallery.</p>
+    <p class="fix">1+4 grid per design (or 1+3 adjusted gracefully when only 4 photos exist) and the “See all N photos” button.</p>
+  </div>
+</div>
+
+<div class="finding">
+  <span class="sev should">Should fix</span>
+  <div>
+    <h3>“Couples who married here” section missing</h3>
+    <p>The design includes per-venue couple cards (photo, names, wedding date, guest count, quote). The live page jumps from the description straight to the trust chips.</p>
+    <p class="fix">Add the section; the design notes the support team already has these stories in WhatsApp. If content isn't ready at launch, hide the section rather than shipping placeholders.</p>
+  </div>
+</div>
+
+<div class="finding">
+  <span class="sev should">Should fix</span>
+  <div>
+    <h3>“Also available on your date” shows gray placeholder tiles</h3>
+    <p>The related-venue cards (EntreBosque, Los Hilos) render as flat gray boxes with a “Voguex” wordmark instead of venue photos.</p>
+    <p class="fix">Bind the venues' real cover photos.</p>
+  </div>
+</div>
+
+<div class="finding">
+  <span class="sev polish">Polish</span>
+  <div>
+    <h3>Price-card copy ignores that a date is already chosen</h3>
+    <p>With “Saturday, 14 November 2026” selected and an exact price shown, the caption still reads “exact price appears when you pick a date”. The design pairs that caption with the <i>no-date</i> state (“From $35,500 · up to -50%”).</p>
+    <p class="fix">State-dependent copy: no date → “From” price + discount badge + that caption; date chosen → exact price, caption dropped.</p>
+  </div>
+</div>
+
+<h2><span class="no">4</span>Hold checkout</h2>
+<div class="pair">
+  <figure><figcaption><b>Figma</b> · 07 · Apartar (10%)</figcaption><div class="shot"><img src="shots/fig-hold.png" alt="Figma design of the hold checkout page"></div></figure>
+  <figure><figcaption><b>Live</b> · Date → Hold → Sign</figcaption><div class="shot"><img src="shots/live-hold.webp" alt="Screenshot of the live hold checkout page"></div></figure>
+</div>
+
+<div class="finding">
+  <span class="sev should">Should fix</span>
+  <div>
+    <h3>Payment timeline dropped the signing amount</h3>
+    <p>Design: “At signing · 20% also on Voguex — <b>$40,000</b>” (computed for the venue). Live: “At signing · 20% also on Voguex” with no amount — for this venue it should say <b>— $26,000</b>. The whole point of this module is “no surprises”; showing the real number is the promise.</p>
+    <p class="fix">Compute and display the 20% amount on the third bullet, as the first bullet already does for the 10%.</p>
+  </div>
+</div>
+
+<div class="finding">
+  <span class="sev should">Should fix</span>
+  <div>
+    <h3>International box lost the USD estimate</h3>
+    <p>Design ends the “Planning your wedding from outside Mexico?” card with “≈ $[X,XXX] USD for this date, tax included”. Live cuts that line, which is the one international couples actually need.</p>
+    <p class="fix">Add the approximate USD conversion for the selected date (clearly marked as approximate).</p>
+  </div>
+</div>
+
+<h2><span class="no">5</span>What already matches</h2>
+<p class="secnote">So the list above lands in context — the build gets the hard parts right:</p>
+<ul class="goods">
+  <li>Full page structure and section order on all four screens</li>
+  <li>Header, category tabs and “coming soon” badges on Home</li>
+  <li>Three-step “How it works” with correct 10% / 20% / 30% logic</li>
+  <li>Results grid: Available / Occupied states, grayscale treatment, “See nearby available dates” link</li>
+  <li>“None of these worked?” tip card with ±3 days / ±1 week / full month chips</li>
+  <li>Price reassurance line under results (“no fine print · 10% hold · 8-day 100% refund”)</li>
+  <li>Hold flow: Date → Hold → Sign stepper, payment timeline, summary card, Stripe notes</li>
+  <li>Magic-link account copy, Edna advisor note, 30-min hold-while-you-ask</li>
+  <li>Green cancellation reassurance on the venue page</li>
+  <li>Footer content, ES | EN toggle, Stripe footer line</li>
+</ul>
+
+<footer class="page">
+  Prepared by UXELERATE · Audit of the EN build, 17 Nov 2026 · Evidence: client screenshots of the live build and renders of the “-- CAPA 1 final” Figma frames (scroll inside each panel to compare full pages).
+</footer>
+
+</div>
