@@ -38,9 +38,9 @@ body {
   padding-block: 0 72px;
 }
 .wrap { max-width: 980px; margin: 0 auto; }
-header.page { padding-block: 56px 36px; border-bottom: 1px solid var(--line); }
+header.page { padding-block: 56px 14px; border-bottom: 1px solid var(--line); }
 .eyebrow { font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: var(--accent); font-weight: 600; }
-h1 { font-family: var(--font-display); font-weight: 600; font-size: clamp(34px, 5vw, 52px); line-height: 1.08; margin: 10px 0 14px; text-wrap: balance; }
+h1 { font-family: var(--font-display); font-weight: 600; font-size: clamp(34px, 5vw, 52px); line-height: 1.08; margin: 10px 0 0; text-wrap: balance; }
 .lede { max-width: 62ch; color: var(--muted); margin: 0 0 22px; }
 .meta { display: flex; flex-wrap: wrap; gap: 8px 22px; font-size: 13px; color: var(--muted); }
 .meta b { color: var(--fg); font-weight: 600; }
@@ -53,6 +53,7 @@ h1 { font-family: var(--font-display); font-weight: 600; font-size: clamp(34px, 
 .count.should .n { color: var(--should); }
 .count.polish .n { color: var(--polish); }
 h2 { font-family: var(--font-display); font-weight: 600; font-size: 30px; margin: 56px 0 6px; text-wrap: balance; }
+header.page + h2 { margin-top: 28px; }
 h2 .no { color: var(--accent); margin-right: 6px; }
 .secnote { color: var(--muted); margin: 0 0 20px; max-width: 70ch; }
 .pair { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 18px 0 22px; }
@@ -92,21 +93,10 @@ code { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: .88em;
 <header class="page">
   <div class="eyebrow">Voguex · QA de diseño a desarrollo</div>
   <h1>Auditoría del Build Voguex</h1>
-  <p class="lede">Diferencias que vale la pena corregir entre el nuevo build en vivo y la experiencia aprobada en Figma. Se auditaron cuatro pantallas del build en inglés: Home, Resultados, Ficha de venue y el checkout de Apartar. En general el build es fiel a la estructura y al flujo del diseño — los huecos se concentran en contenido, datos reales y copys sensibles a la confianza.</p>
-  <div class="meta">
-    <span><b>Build en vivo</b> · <a href="https://strange-borg.5-189-169-17.plesk.page/" target="_blank" rel="noopener">strange-borg.5-189-169-17.plesk.page</a></span>
-    <span><b>Referencia</b> · <a href="https://www.figma.com/design/dIPMn1qevZiu8wV8mMJDJk/VOGUEX-%C2%B7-Dise%C3%B1o" target="_blank" rel="noopener">VOGUEX · Diseño</a>, página “-- CAPA 1 final”</span>
-    <span><b>Fecha de auditoría</b> · 17 nov 2026</span>
-  </div>
-  <div class="counts">
-    <div class="count blocker"><span class="n">5</span><span class="l">Corregir antes de lanzar</span></div>
-    <div class="count should"><span class="n">13</span><span class="l">Conviene corregir</span></div>
-    <div class="count polish"><span class="n">5</span><span class="l">Detalle fino</span></div>
-  </div>
 </header>
 
 <h2><span class="no">0</span>Problemas globales</h2>
-<p class="secnote">Aparecen en varias pantallas; corregirlos una sola vez limpia la mayor parte de la lista.</p>
+<p class="secnote">Aparecen en varias pantallas, corregirlos una sola vez limpia la mayor parte de la lista</p>
 
 <div class="finding">
   <span class="sev blocker">Bloqueante</span>
@@ -129,17 +119,8 @@ code { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: .88em;
 <div class="finding">
   <span class="sev should">Conviene corregir</span>
   <div>
-    <h3>Dos promesas de descuento distintas</h3>
-    <p>El paso 1 del Home dice “Up to <b>14%</b> off on selected dates”; el diseño dice hasta <b>50%</b> (“ofertas de hasta 50% en fechas seleccionadas”), y la tarjeta de tip de Resultados del propio build también dice “weekday offers up to <b>-50%</b>”. Una de las dos cifras está mal.</p>
-    <p class="fix">Confirmar el máximo real con el grupo de venues y usar la misma cifra en todos lados (paso 1 del Home, tip de Resultados, badges de precio).</p>
-  </div>
-</div>
-
-<div class="finding">
-  <span class="sev should">Conviene corregir</span>
-  <div>
     <h3>Mezcla de idiomas en el build en inglés</h3>
-    <p>La versión EN muestra contenido de reseñas en español en las tarjetas de testimonios, y las descripciones de venues traen fragmentos sin traducir. La versión en español no estaba en los screenshots de esta auditoría — necesita el mismo repaso.</p>
+    <p>La versión EN muestra contenido de reseñas en español en las tarjetas de testimonios, y las descripciones de venues traen fragmentos sin traducir. La versión en español no estaba en los screenshots de esta auditoría - necesita el mismo repaso.</p>
     <p class="fix">Todo el contenido visible sigue el idioma activo; correr este mismo checklist sobre el build en ES.</p>
   </div>
 </div>
@@ -162,10 +143,10 @@ code { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: .88em;
 <div class="finding">
   <span class="sev blocker">Bloqueante</span>
   <div>
-    <h3>Los testimonios son reseñas crudas de los venues — incluida una demoledora</h3>
+    <h3>Los testimonios son reseñas crudas de los venues</h3>
     <p>“Couples who got married with Voguex” muestra lo que parecen reseñas de Google de los venues: en español dentro de la página EN, sin la fila de cinco estrellas del diseño, y la tercera tarjeta es una queja larga y furiosa sobre seguridad, publicada tal cual con etiquetas <code>&lt;br&gt;</code> visibles como texto:</p>
     <p class="quote">“<b>UNA VERDADERA DECEPCIÓN Y EXPERIENCIA INSEGURA.</b> No lo recomiendo… INTENTARON ABRIR NUESTRA HABITACIÓN EN LA MADRUGADA…”</p>
-    <p>Es lo más dañino de toda la página — un asesino de conversión sentado en la sección de prueba social. El diseño pide tres citas curadas y cortas sobre la <i>experiencia de reservar</i> (“apartamos la fecha en línea un domingo en la noche”, “planeamos todo desde Chicago”, “aseguramos el venue con el 10%”), cada una con cinco estrellas, nombres de la pareja, venue y año.</p>
+    <p>Es lo más dañino de toda la página. El diseño pide tres citas curadas y cortas sobre la <i>experiencia de reservar</i> (“apartamos la fecha en línea un domingo en la noche”, “planeamos todo desde Chicago”, “aseguramos el venue con el 10%”), cada una con cinco estrellas, nombres de la pareja, venue y año.</p>
     <p class="fix">Reemplazar con las citas curadas del diseño (el equipo de soporte tiene estas historias en WhatsApp, según la nota del propio diseño); agregar la fila de estrellas; nunca conectar reseñas crudas de los venues a esta sección.</p>
   </div>
 </div>
@@ -239,15 +220,6 @@ code { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: .88em;
   </div>
 </div>
 
-<div class="finding">
-  <span class="sev polish">Detalle fino</span>
-  <div>
-    <h3>Marca de agua “Voguex” visible en las fotos de tarjetas ocupadas</h3>
-    <p>Las tarjetas ocupadas en escala de grises muestran una marca de agua tenue de “Voguex” que no existe en el diseño. Verificar que sea una política de imagen intencional y no un asset de placeholder.</p>
-    <p class="fix">Confirmar la intención; si la marca de agua se queda, mantenerla sutil y consistente en todas las fotos, no solo en las ocupadas.</p>
-  </div>
-</div>
-
 <h2><span class="no">3</span>Ficha de venue</h2>
 <div class="pair">
   <figure><figcaption><b>Figma</b> · 05 · Ficha de venue</figcaption><div class="shot"><img src="shots/fig-venue.png" alt="Diseño en Figma de la ficha de venue"></div></figure>
@@ -278,15 +250,6 @@ code { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: .88em;
     <h3>La fila del título perdió sus datos clave</h3>
     <p>Diseño: “★ 4.9 · 12 reseñas | Huaxtla, Jalisco · a 30 min de Guadalajara | Hasta [300] invitados | Capilla propia”. En vivo solo aparece “★ 4.9 Zona Centro Guadalajara, Jalisco” — sin conteo de reseñas, sin aforo, sin el atributo distintivo.</p>
     <p class="fix">Restaurar la fila completa: calificación · reseñas | ubicación · distancia | aforo | atributo distintivo.</p>
-  </div>
-</div>
-
-<div class="finding">
-  <span class="sev should">Conviene corregir</span>
-  <div>
-    <h3>Galería con layout roto y sin “Ver todas las fotos”</h3>
-    <p>Diseño: una imagen hero + cuatro miniaturas en grid compacto, con botón “Ver las 11 fotos”. En vivo: cuatro imágenes con un hueco vacío visible en el grid y sin forma de ver el resto de la galería.</p>
-    <p class="fix">Grid 1+4 como en el diseño (o 1+3 ajustado con gracia cuando solo existan 4 fotos) y el botón “Ver las N fotos”.</p>
   </div>
 </div>
 
@@ -342,7 +305,6 @@ code { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: .88em;
 </div>
 
 <h2><span class="no">5</span>Lo que ya coincide</h2>
-<p class="secnote">Para que la lista de arriba se lea en contexto — el build acierta en lo difícil:</p>
 <ul class="goods">
   <li>Estructura completa y orden de secciones en las cuatro pantallas</li>
   <li>Header, pestañas de categoría y badges de “próximamente” en el Home</li>
@@ -357,7 +319,7 @@ code { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: .88em;
 </ul>
 
 <footer class="page">
-  Preparado por UXELERATE · Auditoría del build EN, 17 nov 2026 · Evidencia: capturas del build en vivo del cliente y renders de los frames “-- CAPA 1 final” de Figma (haz scroll dentro de cada panel para comparar las páginas completas).
+  Preparado por UXELERATE · Auditoría del build EN, 17 nov 2026 · Evidencia: capturas del <a href="https://strange-borg.5-189-169-17.plesk.page/" target="_blank" rel="noopener" style="color:var(--accent)">build en vivo</a> y renders de los frames “-- CAPA 1 final” de <a href="https://www.figma.com/design/dIPMn1qevZiu8wV8mMJDJk/VOGUEX-%C2%B7-Dise%C3%B1o" target="_blank" rel="noopener" style="color:var(--accent)">Figma</a> (haz scroll dentro de cada panel para comparar las páginas completas).
 </footer>
 
 </div>
