@@ -349,6 +349,53 @@ code { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: .88em;
   </div>
 </div>
 
+<div class="finding">
+  <span class="sev should">Conviene corregir</span>
+  <div>
+    <h3>Ficha de venue móvil: los datos clave están sobre la foto y vienen incompletos</h3>
+    <div class="shot" style="max-height:380px; margin:8px 0; max-width:300px;"><img src="shots/fig-m-ficha.png" alt="Ficha de venue móvil en el diseño de Figma"></div>
+    <p>En el build la calificación y la ubicación van montadas sobre la foto del hero (“★ 4.7 · 1157 reseñas / Jocotepec, Jalisco”). En el diseño (frame “04 · Ficha de venue” de CAPA 2) la galería queda limpia — solo el contador “1/11” — y los datos van debajo del título, completos: “★ 4.9 · 12 reseñas · Huaxtla · 30 min de GDL / Hasta 300 inv. / Hacienda · 1 de 9 venues en Voguex · ver todos”. En vivo faltan el aforo, la distancia y el tipo de venue.</p>
+    <p class="fix">Mover la fila de datos debajo del título como en el diseño y completarla (reseñas · ubicación · distancia · aforo · tipo). La galería con miniaturas y “+6 fotos” ya está bien.</p>
+  </div>
+</div>
+
+<div class="finding">
+  <span class="sev should">Conviene corregir</span>
+  <div>
+    <h3>Ficha móvil: “El lugar” repite el volcado de contenido y se contradice otra vez</h3>
+    <p>Igual que en desktop, la descripción trae la ficha cruda del proveedor: “Capacidad salón: de 80 a 400 personas” en medio del texto y una lista “Incluye:” que duplica el módulo “Tu renta incluye” de abajo — con items que no cuadran entre sí: la lista dice “Valet de baños”, “Coordinador” y “Suite nupcial”; el checklist dice “Valet parking” y “Supervisor general del evento”, y la suite nupcial no aparece. El diseño pide solo la descripción curada de 4-5 líneas.</p>
+    <p class="fix">Una sola fuente de verdad: descripción curada en “El lugar”, inclusiones únicamente en “Tu renta incluye” (reconciliadas contra el contrato del venue), y el aforo en la fila de datos del título.</p>
+  </div>
+</div>
+
+<div class="finding">
+  <span class="sev polish">Detalle fino</span>
+  <div>
+    <h3>Ficha móvil: el texto de los botones de la barra fija va al límite</h3>
+    <p>En la barra fija, “Agendar mi recorrido” toca los bordes de su botón y se ve recortado. En el diseño ambos botones respiran dentro del pill.</p>
+    <p class="fix">Dar padding horizontal suficiente a los dos botones (o reducir un punto la tipografía) para que el texto nunca toque el borde a 390px.</p>
+  </div>
+</div>
+
+<div class="finding">
+  <span class="sev should">Conviene corregir</span>
+  <div>
+    <h3>Checkout móvil: se apiló el layout de desktop en lugar del diseño móvil</h3>
+    <div class="shot" style="max-height:380px; margin:8px 0; max-width:300px;"><img src="shots/fig-m-apartar.png" alt="Checkout de apartar móvil en el diseño de Figma"></div>
+    <p>El build reusa el layout de desktop en columna: header completo (logo + ES|EN + “Pago protegido con Stripe” roto en dos líneas), luego la línea de tiempo larga de pagos y el bloque internacional, y hasta después el Resumen y los campos. El diseño móvil (frame “06 · Apartar”) es mucho más corto: header compacto “← Asegura tu fecha · [venue] · 🔒 Stripe”, el Resumen inmediatamente después de la tarjeta del venue — “Total hoy (10%)” con la nota que ya incluye el monto del 20% (“…pago del 20% restante ($40,000)”) — y los campos agrupados bajo “Pago seguro” y “Tus datos”.</p>
+    <p class="fix">Implementar la estructura móvil del diseño: header compacto, Resumen arriba con el monto del 20% en la nota, campos agrupados. Menos scroll antes de poder pagar.</p>
+  </div>
+</div>
+
+<div class="finding">
+  <span class="sev polish">Detalle fino</span>
+  <div>
+    <h3>Resultados móvil: falta el control de ordenar</h3>
+    <p>La vista móvil de resultados solo muestra “Filtros”; el control “Ordenar: Recomendados” del diseño desktop no existe en móvil. Los corchetes (“[7] disponibles”, “★ [0]”) y la falta de aforo/reseñas en las tarjetas ya están cubiertos en los hallazgos globales y de Resultados — aplican igual en móvil.</p>
+    <p class="fix">Agregar el control de ordenar junto a Filtros (o dentro del panel de filtros).</p>
+  </div>
+</div>
+
 <h2><span class="no">6</span>Lo que ya coincide</h2>
 <ul class="goods">
   <li>Estructura completa y orden de secciones en las cuatro pantallas</li>
