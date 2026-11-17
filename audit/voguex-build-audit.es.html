@@ -327,7 +327,20 @@ code { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: .88em;
   </div>
 </div>
 
-<h2><span class="no">5</span>Lo que ya coincide</h2>
+<h2><span class="no">5</span>Móvil</h2>
+<p class="secnote">Hallazgos del build móvil (la referencia es la página “-- CAPA 2 final” del Figma)</p>
+
+<div class="finding">
+  <span class="sev should">Conviene corregir</span>
+  <div>
+    <h3>El selector de ciudades no se cierra al elegir una opción</h3>
+    <div class="shot" style="max-height:340px; margin:8px 0; max-width:420px;"><img src="shots/live-mobile-cities.webp" alt="Selector de ciudades abierto en el build móvil"></div>
+    <p>Al abrir “Dónde”, la lista de ciudades queda abierta después de picar una opción y hay que cerrarla a mano. Acordado con el equipo: al picar una opción, el card se cierra y la selección se aplica. Detalle extra: “San miguel de allende” va sin mayúsculas — debe ser “San Miguel de Allende”.</p>
+    <p class="fix">Tap en una opción → se aplica la selección y se cierra el card; corregir las mayúsculas de los nombres de ciudad.</p>
+  </div>
+</div>
+
+<h2><span class="no">6</span>Lo que ya coincide</h2>
 <ul class="goods">
   <li>Estructura completa y orden de secciones en las cuatro pantallas</li>
   <li>Header, pestañas de categoría y badges de “próximamente” en el Home</li>
