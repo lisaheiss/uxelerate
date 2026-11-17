@@ -229,8 +229,11 @@ code { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: .88em;
   <span class="sev should">Conviene corregir</span>
   <div>
     <h3>Los chips de “Disponible” no siguen el estilo del diseño</h3>
-    <p>En el Figma el chip es suave: fondo menta muy claro, palomita y texto en verde oscuro, integrado a la foto sin gritar. En el build es un pill verde sólido saturado con texto blanco, que pesa más que la propia tarjeta (se aprecia en la comparativa de arriba). Acordado con el equipo que debe igualarse al diseño.</p>
-    <p class="fix">Tomar los estilos del chip directo del Figma (frame “04 · Resultados”): fondo claro, texto y palomita en verde, mismo radio y tipografía; revisar que el chip de “Ocupado ese día” también coincida.</p>
+    <p>En el Figma el chip es suave: fondo menta muy claro, palomita y texto en verde oscuro, integrado a la foto sin gritar. En el build es un pill verde sólido saturado con texto blanco, que pesa más que la propia tarjeta (se aprecia en la comparativa de arriba). Acordado con el equipo que debe igualarse al diseño. En móvil además el “✓ Disponible” aparece como texto verde inline junto al precio — ahí también va el chip sobre la foto, con los mismos estilos.</p>
+    <p>Specs exactos del Figma (frame “04 · Resultados”):</p>
+    <p><b>Disponible</b> · fondo <code>#F2F7EC</code> · texto y palomita <code>#558B2F</code> · Poppins Regular 11px · padding 12px × 6px · radio 14px · a 14px de la esquina superior izquierda de la foto · icono “check” de Material Symbols Rounded.<br>
+    <b>Ocupado ese día</b> · fondo <code>#EEEEEE</code> · texto <code>#6F7276</code> · Poppins SemiBold 11px · mismo padding y radio · la foto lleva velo blanco al 55% (<code>rgba(255,255,255,0.55)</code>), no conversión a blanco y negro.</p>
+    <p class="fix">Aplicar estos valores tal cual en desktop y móvil.</p>
   </div>
 </div>
 
