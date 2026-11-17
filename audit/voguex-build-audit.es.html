@@ -228,6 +228,15 @@ code { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: .88em;
 <div class="finding">
   <span class="sev should">Conviene corregir</span>
   <div>
+    <h3>Los chips de “Disponible” no siguen el estilo del diseño</h3>
+    <p>En el Figma el chip es suave: fondo menta muy claro, palomita y texto en verde oscuro, integrado a la foto sin gritar. En el build es un pill verde sólido saturado con texto blanco, que pesa más que la propia tarjeta (se aprecia en la comparativa de arriba). Acordado con el equipo que debe igualarse al diseño.</p>
+    <p class="fix">Tomar los estilos del chip directo del Figma (frame “04 · Resultados”): fondo claro, texto y palomita en verde, mismo radio y tipografía; revisar que el chip de “Ocupado ese día” también coincida.</p>
+  </div>
+</div>
+
+<div class="finding">
+  <span class="sev should">Conviene corregir</span>
+  <div>
     <h3>Las tarjetas perdieron el aforo y el conteo de reseñas</h3>
     <p>En el diseño cada tarjeta trae “hasta [350] invitados” y la calificación con su conteo (“4.9 (23)”) — dos de los tres datos con los que una pareja filtra venues. En vivo solo aparecen ciudad + número de calificación.</p>
     <p class="fix">Agregar el aforo (“hasta N invitados”) a la línea de datos y el conteo de reseñas junto a la calificación.</p>
