@@ -163,6 +163,16 @@ code { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: .88em;
 <div class="finding">
   <span class="sev should">Conviene corregir</span>
   <div>
+    <h3>Las pestañas de categoría llevan a páginas vacías de “coming soon”</h3>
+    <p>“Concept venues” y “Beyond the venue” navegan a una vista dedicada de “COMING SOON” (p. ej. <code>/venues-con-concepto</code>): un callejón sin salida desde la barra principal. En el diseño esas pestañas solo muestran el badge de “próximamente”, no son destinos.</p>
+    <div class="shot" style="max-height:300px; margin:8px 0;"><img src="shots/live-concept.webp" alt="Vista coming soon de Concept venues en el build en vivo"></div>
+    <p class="fix">Ocultar esta vista. Las pestañas con “coming soon” no navegan (o regresan al home), y el menú superior se conecta por anclas a cada sección de la landing: “Explore venues” → venues seleccionados, “How it works” → ¿Cómo funciona Voguex?, “List your venue” → su sección correspondiente.</p>
+  </div>
+</div>
+
+<div class="finding">
+  <span class="sev should">Conviene corregir</span>
+  <div>
     <h3>Las tarjetas de venue perdieron su framing de precio y su línea de contexto</h3>
     <p>En el diseño las tarjetas dicen: tipo + distancia (“Hacienda · Huaxtla, a 30 min de GDL · Ver mapa”), “<b>Desde</b> $35,500 MXN” con badge de “hasta -50%”, y la nota “solo venue · <b>precio final según tu fecha</b>”. En vivo muestran un “$ 245,000 MXN” pelón, sin “Desde”, sin badge, solo “Zapopan, Jalisco”, y la nota mal traducida como “Venue only <b>or final package</b> depending on your date” — que cambia el significado de “el precio varía según la fecha” a “lo que recibes varía”.</p>
     <p class="fix">Restaurar “Desde” + badge de descuento + línea de tipo/distancia; nota: “venue only · final price depends on your date”.</p>
