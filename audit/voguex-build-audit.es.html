@@ -1,0 +1,363 @@
+<title>Auditoría del Build Voguex</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+/* Layout: columna única de lectura, evidencia en pares 2-up, hallazgos como filas con chip de severidad */
+:root {
+  --bg: #faf8f4;
+  --surface: #ffffff;
+  --fg: #211d18;
+  --muted: #6e6659;
+  --line: #e5dfd3;
+  --accent: #96794a;
+  --blocker: #b3392e;
+  --blocker-bg: #f9e9e7;
+  --should: #9a6a1f;
+  --should-bg: #f7eedd;
+  --polish: #5c6670;
+  --polish-bg: #eceef0;
+  --good: #3c7a4e;
+  --good-bg: #e7f1ea;
+  --font-display: "Cormorant Garamond", Georgia, "Times New Roman", serif;
+  --font-body: Inter, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #171410; --surface: #201c17; --fg: #ece7de; --muted: #a39a8a; --line: #38322a;
+  --accent: #c3a269; --blocker: #e2695e; --blocker-bg: #3a211e; --should: #d9a24a; --should-bg: #352a18;
+  --polish: #9aa6b1; --polish-bg: #262b30; --good: #7cb98e; --good-bg: #1e2f24; color-scheme: dark;
+} }
+:root[data-theme="dark"] {
+  --bg: #171410; --surface: #201c17; --fg: #ece7de; --muted: #a39a8a; --line: #38322a;
+  --accent: #c3a269; --blocker: #e2695e; --blocker-bg: #3a211e; --should: #d9a24a; --should-bg: #352a18;
+  --polish: #9aa6b1; --polish-bg: #262b30; --good: #7cb98e; --good-bg: #1e2f24; color-scheme: dark;
+}
+body {
+  background: var(--bg); color: var(--fg);
+  font-family: var(--font-body); font-size: 15px; line-height: 1.6; margin: 0;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 0 72px;
+}
+.wrap { max-width: 980px; margin: 0 auto; }
+header.page { padding-block: 56px 36px; border-bottom: 1px solid var(--line); }
+.eyebrow { font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: var(--accent); font-weight: 600; }
+h1 { font-family: var(--font-display); font-weight: 600; font-size: clamp(34px, 5vw, 52px); line-height: 1.08; margin: 10px 0 14px; text-wrap: balance; }
+.lede { max-width: 62ch; color: var(--muted); margin: 0 0 22px; }
+.meta { display: flex; flex-wrap: wrap; gap: 8px 22px; font-size: 13px; color: var(--muted); }
+.meta b { color: var(--fg); font-weight: 600; }
+.meta a { color: var(--accent); }
+.counts { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 24px; }
+.count { display: flex; align-items: baseline; gap: 8px; border: 1px solid var(--line); background: var(--surface); border-radius: 8px; padding: 10px 14px; }
+.count .n { font-size: 24px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.count .l { font-size: 12px; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); }
+.count.blocker .n { color: var(--blocker); }
+.count.should .n { color: var(--should); }
+.count.polish .n { color: var(--polish); }
+h2 { font-family: var(--font-display); font-weight: 600; font-size: 30px; margin: 56px 0 6px; text-wrap: balance; }
+h2 .no { color: var(--accent); margin-right: 6px; }
+.secnote { color: var(--muted); margin: 0 0 20px; max-width: 70ch; }
+.pair { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 18px 0 22px; }
+.pair figure { margin: 0; min-width: 0; }
+.pair figcaption { font-size: 12px; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); margin-bottom: 7px; }
+.pair figcaption b { color: var(--fg); }
+.shot { border: 1px solid var(--line); border-radius: 8px; background: var(--surface); max-height: 540px; overflow-y: auto; }
+.shot img { display: block; width: 100%; max-width: 100%; }
+.finding { display: grid; grid-template-columns: 110px 1fr; gap: 14px; padding: 16px 0; border-top: 1px solid var(--line); }
+.finding:last-of-type { border-bottom: 1px solid var(--line); }
+.sev { font-size: 11px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; border-radius: 99px; padding: 3px 10px; height: fit-content; width: fit-content; }
+.sev.blocker { color: var(--blocker); background: var(--blocker-bg); }
+.sev.should { color: var(--should); background: var(--should-bg); }
+.sev.polish { color: var(--polish); background: var(--polish-bg); }
+.finding h3 { margin: 0 0 4px; font-size: 15.5px; font-weight: 650; }
+.finding p { margin: 0 0 6px; color: var(--muted); max-width: 72ch; }
+.finding p:last-child { margin-bottom: 0; }
+.finding .fix { color: var(--fg); }
+.finding .fix::before { content: "Corrección: "; font-weight: 650; color: var(--good); }
+.quote { font-size: 13.5px; border-left: 3px solid var(--line); padding: 2px 0 2px 12px; margin: 8px 0; color: var(--muted); }
+.quote b { color: var(--fg); font-weight: 600; }
+.goods { list-style: none; margin: 14px 0 0; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 8px 24px; }
+.goods li { padding-left: 22px; position: relative; color: var(--muted); }
+.goods li::before { content: "✓"; position: absolute; left: 0; color: var(--good); font-weight: 700; }
+footer.page { margin-top: 64px; padding-top: 20px; border-top: 1px solid var(--line); font-size: 13px; color: var(--muted); }
+code { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: .88em; background: var(--polish-bg); border-radius: 4px; padding: 1px 5px; }
+@media (max-width: 720px) {
+  .pair { grid-template-columns: 1fr; }
+  .finding { grid-template-columns: 1fr; gap: 6px; }
+  .goods { grid-template-columns: 1fr; }
+}
+</style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Inter:wght@400;500;650;700&display=swap">
+
+<div class="wrap">
+
+<header class="page">
+  <div class="eyebrow">Voguex · QA de diseño a desarrollo</div>
+  <h1>Auditoría del Build Voguex</h1>
+  <p class="lede">Diferencias que vale la pena corregir entre el nuevo build en vivo y la experiencia aprobada en Figma. Se auditaron cuatro pantallas del build en inglés: Home, Resultados, Ficha de venue y el checkout de Apartar. En general el build es fiel a la estructura y al flujo del diseño — los huecos se concentran en contenido, datos reales y copys sensibles a la confianza.</p>
+  <div class="meta">
+    <span><b>Build en vivo</b> · <a href="https://strange-borg.5-189-169-17.plesk.page/" target="_blank" rel="noopener">strange-borg.5-189-169-17.plesk.page</a></span>
+    <span><b>Referencia</b> · <a href="https://www.figma.com/design/dIPMn1qevZiu8wV8mMJDJk/VOGUEX-%C2%B7-Dise%C3%B1o" target="_blank" rel="noopener">VOGUEX · Diseño</a>, página “-- CAPA 1 final”</span>
+    <span><b>Fecha de auditoría</b> · 17 nov 2026</span>
+  </div>
+  <div class="counts">
+    <div class="count blocker"><span class="n">5</span><span class="l">Corregir antes de lanzar</span></div>
+    <div class="count should"><span class="n">13</span><span class="l">Conviene corregir</span></div>
+    <div class="count polish"><span class="n">5</span><span class="l">Detalle fino</span></div>
+  </div>
+</header>
+
+<h2><span class="no">0</span>Problemas globales</h2>
+<p class="secnote">Aparecen en varias pantallas; corregirlos una sola vez limpia la mayor parte de la lista.</p>
+
+<div class="finding">
+  <span class="sev blocker">Bloqueante</span>
+  <div>
+    <h3>Los corchetes de placeholder del diseño se publicaron como texto literal</h3>
+    <p>En el archivo de Figma, los corchetes marcan “reemplazar con datos reales”. El build los renderiza tal cual en todas las pantallas: <code>[2] available that day</code>, calificaciones como <code>★ [0]</code> y <code>[4.8]</code>, <code>[24] couples booked with Voguex this month</code>, nombres de testimonios como <code>[Daniela Molgora]</code> y el placeholder del checkout <code>[Mariana] and [Diego]</code>.</p>
+    <p class="fix">Quitar todos los corchetes y conectar el dato real; donde todavía no exista un dato real (p. ej. los seguidores eran <code>[XX.X mil]</code> en el diseño), ocultar el elemento en lugar de mostrar el placeholder.</p>
+  </div>
+</div>
+
+<div class="finding">
+  <span class="sev blocker">Bloqueante</span>
+  <div>
+    <h3>La fecha de búsqueda por defecto está en el pasado</h3>
+    <p>El hero, Resultados y la Ficha de venue vienen precargados con <b>Sat, 14 Nov 2026</b> — hace tres días. Quien llega hoy aterriza en una búsqueda de una fecha que ya no se puede reservar. El diseño entrega el campo de fecha vacío (“Elige la fecha si ya la sabes”).</p>
+    <p class="fix">Sin fecha precargada en el hero, como marca el diseño; mínimo del date picker = hoy; nunca persistir una fecha pasada en la sesión.</p>
+  </div>
+</div>
+
+<div class="finding">
+  <span class="sev should">Conviene corregir</span>
+  <div>
+    <h3>Dos promesas de descuento distintas</h3>
+    <p>El paso 1 del Home dice “Up to <b>14%</b> off on selected dates”; el diseño dice hasta <b>50%</b> (“ofertas de hasta 50% en fechas seleccionadas”), y la tarjeta de tip de Resultados del propio build también dice “weekday offers up to <b>-50%</b>”. Una de las dos cifras está mal.</p>
+    <p class="fix">Confirmar el máximo real con el grupo de venues y usar la misma cifra en todos lados (paso 1 del Home, tip de Resultados, badges de precio).</p>
+  </div>
+</div>
+
+<div class="finding">
+  <span class="sev should">Conviene corregir</span>
+  <div>
+    <h3>Mezcla de idiomas en el build en inglés</h3>
+    <p>La versión EN muestra contenido de reseñas en español en las tarjetas de testimonios, y las descripciones de venues traen fragmentos sin traducir. La versión en español no estaba en los screenshots de esta auditoría — necesita el mismo repaso.</p>
+    <p class="fix">Todo el contenido visible sigue el idioma activo; correr este mismo checklist sobre el build en ES.</p>
+  </div>
+</div>
+
+<div class="finding">
+  <span class="sev polish">Detalle fino</span>
+  <div>
+    <h3>El copy de confianza cambia entre pantallas</h3>
+    <p>Home: “+1,000 group weddings”. Ficha de venue: “+1000 weddings by the group” (sin separador de miles y con otra redacción). La intención del diseño: bodas realizadas por el grupo de venues — “+1,000 bodas realizadas por el grupo”.</p>
+    <p class="fix">Una sola redacción, con separador de miles, reutilizada en ambas pantallas.</p>
+  </div>
+</div>
+
+<h2><span class="no">1</span>Home</h2>
+<div class="pair">
+  <figure><figcaption><b>Figma</b> · 01 · Home</figcaption><div class="shot"><img src="shots/fig-home.png" alt="Diseño en Figma del home de Voguex"></div></figure>
+  <figure><figcaption><b>En vivo</b> · strange-borg…plesk.page</figcaption><div class="shot"><img src="shots/live-home.webp" alt="Captura del home en vivo de Voguex"></div></figure>
+</div>
+
+<div class="finding">
+  <span class="sev blocker">Bloqueante</span>
+  <div>
+    <h3>Los testimonios son reseñas crudas de los venues — incluida una demoledora</h3>
+    <p>“Couples who got married with Voguex” muestra lo que parecen reseñas de Google de los venues: en español dentro de la página EN, sin la fila de cinco estrellas del diseño, y la tercera tarjeta es una queja larga y furiosa sobre seguridad, publicada tal cual con etiquetas <code>&lt;br&gt;</code> visibles como texto:</p>
+    <p class="quote">“<b>UNA VERDADERA DECEPCIÓN Y EXPERIENCIA INSEGURA.</b> No lo recomiendo… INTENTARON ABRIR NUESTRA HABITACIÓN EN LA MADRUGADA…”</p>
+    <p>Es lo más dañino de toda la página — un asesino de conversión sentado en la sección de prueba social. El diseño pide tres citas curadas y cortas sobre la <i>experiencia de reservar</i> (“apartamos la fecha en línea un domingo en la noche”, “planeamos todo desde Chicago”, “aseguramos el venue con el 10%”), cada una con cinco estrellas, nombres de la pareja, venue y año.</p>
+    <p class="fix">Reemplazar con las citas curadas del diseño (el equipo de soporte tiene estas historias en WhatsApp, según la nota del propio diseño); agregar la fila de estrellas; nunca conectar reseñas crudas de los venues a esta sección.</p>
+  </div>
+</div>
+
+<div class="finding">
+  <span class="sev blocker">Bloqueante</span>
+  <div>
+    <h3>La línea de confianza del hero está cortada a media frase</h3>
+    <p>Dice “+1,000 group weddings · 24 bookings this month · <b>Payment protected with</b>” — falta la palabra <b>Stripe</b>. Una promesa de confianza trunca se lee como algo roto justo donde más importa la credibilidad.</p>
+    <p class="fix">“Payment protected with Stripe” / “Pago protegido con Stripe”, como en el diseño y en el footer.</p>
+  </div>
+</div>
+
+<div class="finding">
+  <span class="sev should">Conviene corregir</span>
+  <div>
+    <h3>Las tarjetas de venue perdieron su framing de precio y su línea de contexto</h3>
+    <p>En el diseño las tarjetas dicen: tipo + distancia (“Hacienda · Huaxtla, a 30 min de GDL · Ver mapa”), “<b>Desde</b> $35,500 MXN” con badge de “hasta -50%”, y la nota “solo venue · <b>precio final según tu fecha</b>”. En vivo muestran un “$ 245,000 MXN” pelón, sin “Desde”, sin badge, solo “Zapopan, Jalisco”, y la nota mal traducida como “Venue only <b>or final package</b> depending on your date” — que cambia el significado de “el precio varía según la fecha” a “lo que recibes varía”.</p>
+    <p class="fix">Restaurar “Desde” + badge de descuento + línea de tipo/distancia; nota: “venue only · final price depends on your date”.</p>
+  </div>
+</div>
+
+<div class="finding">
+  <span class="sev should">Conviene corregir</span>
+  <div>
+    <h3>Calificaciones de cero estrellas a la vista</h3>
+    <p>Antiguo Colegio de San Diego y Los Hilos muestran “★ [0]” en Home y Resultados. El diseño nunca muestra calificación sin reseñas (siempre estilo “4.9 (23)”: calificación con conteo).</p>
+    <p class="fix">Ocultar la calificación hasta que el venue tenga reseñas; al mostrarla, acompañarla del número de reseñas.</p>
+  </div>
+</div>
+
+<div class="finding">
+  <span class="sev should">Conviene corregir</span>
+  <div>
+    <h3>Grid de Instagram: dos fotos duplicadas y dos cuadros casi en blanco</h3>
+    <p>El diseño muestra cuatro fotos distintas de venues. En vivo aparece la misma foto de una pareja dos veces más dos cuadros lavados, casi blancos, que se leen como imágenes rotas. El conteo de seguidores (28.6k) sí está bien conectado.</p>
+    <p class="fix">Cuatro fotos distintas de venues/bodas, como en el diseño.</p>
+  </div>
+</div>
+
+<div class="finding">
+  <span class="sev polish">Detalle fino</span>
+  <div>
+    <h3>El estado “ocupado” se cuela al carrusel del Home</h3>
+    <p>La cuarta tarjeta (Finca by Alofa) aparece en gris con “Occupied on your date”. En el diseño, el tratamiento de ocupado pertenece a Resultados; el carrusel del Home es inspiracional y muestra cada venue en su mejor versión. Además: la ubicación por defecto dice “3 cities” donde el diseño dice “Guadalajara y alrededores”.</p>
+    <p class="fix">El carrusel del Home siempre muestra la tarjeta estándar; etiquetar la región por defecto como en el diseño.</p>
+  </div>
+</div>
+
+<h2><span class="no">2</span>Resultados</h2>
+<div class="pair">
+  <figure><figcaption><b>Figma</b> · 04 · Resultados (con fecha)</figcaption><div class="shot"><img src="shots/fig-results.png" alt="Diseño en Figma de la página de resultados con fecha elegida"></div></figure>
+  <figure><figcaption><b>En vivo</b> · Venues for Sat, 14 Nov 2026</figcaption><div class="shot"><img src="shots/live-results.webp" alt="Captura de la página de resultados en vivo"></div></figure>
+</div>
+
+<div class="finding">
+  <span class="sev should">Conviene corregir</span>
+  <div>
+    <h3>Las tarjetas perdieron el aforo y el conteo de reseñas</h3>
+    <p>En el diseño cada tarjeta trae “hasta [350] invitados” y la calificación con su conteo (“4.9 (23)”) — dos de los tres datos con los que una pareja filtra venues. En vivo solo aparecen ciudad + número de calificación.</p>
+    <p class="fix">Agregar el aforo (“hasta N invitados”) a la línea de datos y el conteo de reseñas junto a la calificación.</p>
+  </div>
+</div>
+
+<div class="finding">
+  <span class="sev polish">Detalle fino</span>
+  <div>
+    <h3>Resultados conserva el header completo del Home</h3>
+    <p>El diseño le da a Resultados un header más ligero — logo con el sello “VENUES · MÉXICO”, “Explorar venues” subrayado como activo y sin la barra de categorías. En vivo se reutiliza todo el header del Home, incluidas las pestañas “Venue only / Concept venues / Beyond the venue”.</p>
+    <p class="fix">Opcional: adoptar el header ligero de Resultados; si las pestañas se quedan, marcar el estado activo de forma consistente.</p>
+  </div>
+</div>
+
+<div class="finding">
+  <span class="sev polish">Detalle fino</span>
+  <div>
+    <h3>Marca de agua “Voguex” visible en las fotos de tarjetas ocupadas</h3>
+    <p>Las tarjetas ocupadas en escala de grises muestran una marca de agua tenue de “Voguex” que no existe en el diseño. Verificar que sea una política de imagen intencional y no un asset de placeholder.</p>
+    <p class="fix">Confirmar la intención; si la marca de agua se queda, mantenerla sutil y consistente en todas las fotos, no solo en las ocupadas.</p>
+  </div>
+</div>
+
+<h2><span class="no">3</span>Ficha de venue</h2>
+<div class="pair">
+  <figure><figcaption><b>Figma</b> · 05 · Ficha de venue</figcaption><div class="shot"><img src="shots/fig-venue.png" alt="Diseño en Figma de la ficha de venue"></div></figure>
+  <figure><figcaption><b>En vivo</b> · Antiguo Colegio de San Diego</figcaption><div class="shot"><img src="shots/live-venue.webp" alt="Captura de la ficha de venue en vivo"></div></figure>
+</div>
+
+<div class="finding">
+  <span class="sev blocker">Bloqueante</span>
+  <div>
+    <h3>La página se contradice sobre qué incluye la renta</h3>
+    <p>“Your venue rental includes” lista <b>Valet parking ✓</b>. Treinta líneas después, “RENTAL DOES NOT INCLUDE” lista <b>Valet parking services</b>. En una página que cobra dinero, una contradicción sobre lo que está incluido es una disputa de reembolso esperando a suceder.</p>
+    <p class="fix">Hacer del checklist la única fuente de verdad por venue; reconciliar el valet parking (y reverificar cada punto) contra el contrato del venue.</p>
+  </div>
+</div>
+
+<div class="finding">
+  <span class="sev should">Conviene corregir</span>
+  <div>
+    <h3>“The venue” es un volcado de contenido crudo, no la descripción curada</h3>
+    <p>El diseño pide una descripción curada de tres líneas. En vivo se pegó la ficha completa del proveedor: listas de “RENTAL INCLUDES / RENTAL DOES NOT INCLUDE” que duplican (y contradicen) el módulo de checklist de arriba, más detalles de contrato sin estructura — depósito en garantía de $25,000 MXN, horas extra hasta las 3:00 AM, dos días de montaje. Además hay un typo: “Basic <b>lightning</b> in the rectangular ballrooms” → <b>lighting</b>.</p>
+    <p class="fix">Recortar la prosa a la descripción curada; mover depósito/horas extra/montaje al módulo estructurado de incluidos o a un bloque de “Bueno saberlo”; corregir el typo.</p>
+  </div>
+</div>
+
+<div class="finding">
+  <span class="sev should">Conviene corregir</span>
+  <div>
+    <h3>La fila del título perdió sus datos clave</h3>
+    <p>Diseño: “★ 4.9 · 12 reseñas | Huaxtla, Jalisco · a 30 min de Guadalajara | Hasta [300] invitados | Capilla propia”. En vivo solo aparece “★ 4.9 Zona Centro Guadalajara, Jalisco” — sin conteo de reseñas, sin aforo, sin el atributo distintivo.</p>
+    <p class="fix">Restaurar la fila completa: calificación · reseñas | ubicación · distancia | aforo | atributo distintivo.</p>
+  </div>
+</div>
+
+<div class="finding">
+  <span class="sev should">Conviene corregir</span>
+  <div>
+    <h3>Galería con layout roto y sin “Ver todas las fotos”</h3>
+    <p>Diseño: una imagen hero + cuatro miniaturas en grid compacto, con botón “Ver las 11 fotos”. En vivo: cuatro imágenes con un hueco vacío visible en el grid y sin forma de ver el resto de la galería.</p>
+    <p class="fix">Grid 1+4 como en el diseño (o 1+3 ajustado con gracia cuando solo existan 4 fotos) y el botón “Ver las N fotos”.</p>
+  </div>
+</div>
+
+<div class="finding">
+  <span class="sev should">Conviene corregir</span>
+  <div>
+    <h3>Falta la sección “Parejas que se casaron aquí”</h3>
+    <p>El diseño incluye tarjetas de parejas por venue (foto, nombres, fecha de boda, invitados, cita). La página en vivo salta de la descripción directo a los chips de confianza.</p>
+    <p class="fix">Agregar la sección; el diseño anota que el equipo de soporte ya tiene estas historias en WhatsApp. Si el contenido no está listo al lanzar, ocultar la sección en lugar de publicar placeholders.</p>
+  </div>
+</div>
+
+<div class="finding">
+  <span class="sev should">Conviene corregir</span>
+  <div>
+    <h3>“Also available on your date” muestra cuadros grises de placeholder</h3>
+    <p>Las tarjetas de venues relacionados (EntreBosque, Los Hilos) se renderizan como cajas grises planas con el logotipo “Voguex” en lugar de fotos de los venues.</p>
+    <p class="fix">Conectar las fotos de portada reales de cada venue.</p>
+  </div>
+</div>
+
+<div class="finding">
+  <span class="sev polish">Detalle fino</span>
+  <div>
+    <h3>El copy de la tarjeta de precio ignora que ya hay fecha elegida</h3>
+    <p>Con “Saturday, 14 November 2026” seleccionado y un precio exacto en pantalla, el caption sigue diciendo “exact price appears when you pick a date”. En el diseño ese caption acompaña al estado <i>sin fecha</i> (“Desde $35,500 · hasta -50%”).</p>
+    <p class="fix">Copy según el estado: sin fecha → precio “Desde” + badge de descuento + ese caption; con fecha → precio exacto y el caption desaparece.</p>
+  </div>
+</div>
+
+<h2><span class="no">4</span>Checkout de Apartar</h2>
+<div class="pair">
+  <figure><figcaption><b>Figma</b> · 07 · Apartar (10%)</figcaption><div class="shot"><img src="shots/fig-hold.png" alt="Diseño en Figma del checkout de apartar"></div></figure>
+  <figure><figcaption><b>En vivo</b> · Date → Hold → Sign</figcaption><div class="shot"><img src="shots/live-hold.webp" alt="Captura del checkout de apartar en vivo"></div></figure>
+</div>
+
+<div class="finding">
+  <span class="sev should">Conviene corregir</span>
+  <div>
+    <h3>La línea de tiempo de pagos perdió el monto de la firma</h3>
+    <p>Diseño: “A la firma · 20% también en Voguex — <b>$40,000</b>” (calculado para el venue). En vivo: “At signing · 20% also on Voguex” sin monto — para este venue debería decir <b>— $26,000</b>. Todo el punto de este módulo es “sin sorpresas”; mostrar el número real es la promesa.</p>
+    <p class="fix">Calcular y mostrar el monto del 20% en el tercer punto, igual que el primero ya lo hace con el 10%.</p>
+  </div>
+</div>
+
+<div class="finding">
+  <span class="sev should">Conviene corregir</span>
+  <div>
+    <h3>El bloque internacional perdió el estimado en USD</h3>
+    <p>El diseño cierra la tarjeta “¿Planeas tu boda desde fuera de México?” con “≈ $[X,XXX] USD por esta fecha, IVA incluido”. En vivo esa línea se cortó — y es justo la que las parejas internacionales necesitan.</p>
+    <p class="fix">Agregar la conversión aproximada a USD para la fecha elegida (claramente marcada como aproximada).</p>
+  </div>
+</div>
+
+<h2><span class="no">5</span>Lo que ya coincide</h2>
+<p class="secnote">Para que la lista de arriba se lea en contexto — el build acierta en lo difícil:</p>
+<ul class="goods">
+  <li>Estructura completa y orden de secciones en las cuatro pantallas</li>
+  <li>Header, pestañas de categoría y badges de “próximamente” en el Home</li>
+  <li>“Cómo funciona” en tres pasos con la lógica 10% / 20% / 30% correcta</li>
+  <li>Grid de resultados: estados Disponible / Ocupado, escala de grises, link “Ver fechas cercanas disponibles”</li>
+  <li>Tarjeta “¿Ninguno te convenció?” con chips de ±3 días / ±1 semana / todo el mes</li>
+  <li>Línea de tranquilidad bajo resultados (“sin letras chiquitas · aparta con el 10% · 8 días con reembolso del 100%”)</li>
+  <li>Flujo de apartado: stepper Fecha → Apartar → Firmar, línea de pagos, tarjeta de resumen, notas de Stripe</li>
+  <li>Copy de cuenta con magic link, nota de la asesora Edna, fecha guardada 30 min mientras preguntas</li>
+  <li>Nota verde de cancelación sin penalización en la ficha de venue</li>
+  <li>Contenido del footer, toggle ES | EN, línea de Stripe al pie</li>
+</ul>
+
+<footer class="page">
+  Preparado por UXELERATE · Auditoría del build EN, 17 nov 2026 · Evidencia: capturas del build en vivo del cliente y renders de los frames “-- CAPA 1 final” de Figma (haz scroll dentro de cada panel para comparar las páginas completas).
+</footer>
+
+</div>
