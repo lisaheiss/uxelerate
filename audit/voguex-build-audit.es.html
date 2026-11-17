@@ -111,7 +111,7 @@ code { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: .88em;
   <span class="sev blocker">Bloqueante</span>
   <div>
     <h3>La fecha de búsqueda por defecto está en el pasado</h3>
-    <p>El hero, Resultados y la Ficha de venue vienen precargados con <b>Sat, 14 Nov 2026</b> — hace tres días. Quien llega hoy aterriza en una búsqueda de una fecha que ya no se puede reservar. El diseño entrega el campo de fecha vacío (“Elige la fecha si ya la sabes”).</p>
+    <p>El hero, Resultados y la Ficha de venue vienen precargados con <b>Sat, 14 Nov 2026</b> - hace tres días. Quien llega hoy aterriza en una búsqueda de una fecha que ya no se puede reservar. El diseño entrega el campo de fecha vacío (“Elige la fecha si ya la sabes”).</p>
     <p class="fix">Sin fecha precargada en el hero, como marca el diseño; mínimo del date picker = hoy; nunca persistir una fecha pasada en la sesión.</p>
   </div>
 </div>
@@ -146,7 +146,7 @@ code { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: .88em;
   <span class="sev blocker">Bloqueante</span>
   <div>
     <h3>La línea de confianza del hero está cortada a media frase</h3>
-    <p>Dice “+1,000 group weddings · 24 bookings this month · <b>Payment protected with</b>” — falta la palabra <b>Stripe</b>. Una promesa de confianza trunca se lee como algo roto justo donde más importa la credibilidad.</p>
+    <p>Dice “+1,000 group weddings · 24 bookings this month · <b>Payment protected with</b>” - falta la palabra <b>Stripe</b>. Una promesa de confianza trunca se lee como algo roto justo donde más importa la credibilidad.</p>
     <p class="fix">“Payment protected with Stripe” / “Pago protegido con Stripe”, como en el diseño y en el footer.</p>
   </div>
 </div>
@@ -165,7 +165,7 @@ code { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: .88em;
   <span class="sev should">Conviene corregir</span>
   <div>
     <h3>Las tarjetas de venue perdieron su framing de precio y su línea de contexto</h3>
-    <p>En el diseño las tarjetas dicen: tipo + distancia (“Hacienda · Huaxtla, a 30 min de GDL · Ver mapa”), “<b>Desde</b> $35,500 MXN” con badge de “hasta -50%”, y la nota “solo venue · <b>precio final según tu fecha</b>”. En vivo muestran un “$ 245,000 MXN” pelón, sin “Desde”, sin badge, solo “Zapopan, Jalisco”, y la nota mal traducida como “Venue only <b>or final package</b> depending on your date” — que cambia el significado de “el precio varía según la fecha” a “lo que recibes varía”.</p>
+    <p>En el diseño las tarjetas dicen: tipo + distancia (“Hacienda · Huaxtla, a 30 min de GDL · Ver mapa”), “<b>Desde</b> $35,500 MXN” con badge de “hasta -50%”, y la nota “solo venue · <b>precio final según tu fecha</b>”. En vivo muestran un “$ 245,000 MXN” pelón, sin “Desde”, sin badge, solo “Zapopan, Jalisco”, y la nota mal traducida como “Venue only <b>or final package</b> depending on your date” - que cambia el significado de “el precio varía según la fecha” a “lo que recibes varía”.</p>
     <p class="fix">Restaurar “Desde” + badge de descuento + línea de tipo/distancia; nota: “venue only · final price depends on your date”.</p>
   </div>
 </div>
@@ -202,7 +202,7 @@ code { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: .88em;
       <figure><figcaption><b>Figma</b> · 02 · Modal de fecha</figcaption><div class="shot" style="max-height:360px;"><img src="shots/fig-datepicker.png" alt="Modal de fecha en el diseño de Figma"></div></figure>
       <figure><figcaption><b>En vivo</b> · date picker</figcaption><div class="shot" style="max-height:360px;"><img src="shots/live-datepicker.webp" alt="Date picker del build en vivo"></div></figure>
     </div>
-    <p>En el diseño la leyenda tiene tres estados — <b>disponible</b> (negro), <b>ocupado</b> (gris, tachado) y <b>con oferta</b> (punto verde) — y las ofertas son pocas y señaladas (el 2, el 13, el 23). En vivo casi todos los días traen punto verde, ningún día aparece como ocupado y la leyenda solo dice “on offer”. Si todo está en oferta, la señal deja de significar algo y la promesa de “disponibilidad en tiempo real” pierde credibilidad. Detalles menores: faltan las etiquetas “AÑO / MES” junto a los chips, el día seleccionado (14 nov) cae dentro del rango deshabilitado del pasado, hay un día resaltado en gris (21 dic) que no corresponde a hoy, y “Dónde” dice “All cities” aquí pero “3 cities” en el Home.</p>
+    <p>En el diseño la leyenda tiene tres estados - <b>disponible</b> (negro), <b>ocupado</b> (gris, tachado) y <b>con oferta</b> (punto verde) - y las ofertas son pocas y señaladas (el 2, el 13, el 23). En vivo casi todos los días traen punto verde, ningún día aparece como ocupado y la leyenda solo dice “on offer”. Si todo está en oferta, la señal deja de significar algo y la promesa de “disponibilidad en tiempo real” pierde credibilidad. Detalles menores: faltan las etiquetas “AÑO / MES” junto a los chips, el día seleccionado (14 nov) cae dentro del rango deshabilitado del pasado, hay un día resaltado en gris (21 dic) que no corresponde a hoy, y “Dónde” dice “All cities” aquí pero “3 cities” en el Home.</p>
     <p class="fix">Conectar los tres estados reales del calendario con su leyenda completa; puntos verdes solo en fechas con oferta real; agregar un botón de <b>resetear / limpiar fecha</b> cuando ya hay una elegida (hoy solo existe “I don't have a date yet” y Apply, acordado con el equipo); unificar el label de “Dónde”; y verificar el día resaltado que no es hoy.</p>
   </div>
 </div>
@@ -211,7 +211,7 @@ code { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: .88em;
   <span class="sev should">Conviene corregir</span>
   <div>
     <h3>Los chips de “Disponible” no siguen el estilo del diseño</h3>
-    <p>En el Figma el chip es suave: fondo menta muy claro, palomita y texto en verde oscuro, integrado a la foto sin gritar. En el build es un pill verde sólido saturado con texto blanco, que pesa más que la propia tarjeta (se aprecia en la comparativa de arriba). Acordado con el equipo que debe igualarse al diseño. En móvil además el “✓ Disponible” aparece como texto verde inline junto al precio — ahí también va el chip sobre la foto, con los mismos estilos.</p>
+    <p>En el Figma el chip es suave: fondo menta muy claro, palomita y texto en verde oscuro, integrado a la foto sin gritar. En el build es un pill verde sólido saturado con texto blanco, que pesa más que la propia tarjeta (se aprecia en la comparativa de arriba). Acordado con el equipo que debe igualarse al diseño. En móvil además el “✓ Disponible” aparece como texto verde inline junto al precio - ahí también va el chip sobre la foto, con los mismos estilos.</p>
     <p>Specs exactos del Figma (frame “04 · Resultados”):</p>
     <p><b>Disponible</b> · fondo <code>#F2F7EC</code> · texto y palomita <code>#558B2F</code> · Poppins Regular 11px · padding 12px × 6px · radio 14px · a 14px de la esquina superior izquierda de la foto · icono “check” de Material Symbols Rounded.<br>
     <b>Ocupado ese día</b> · fondo <code>#EEEEEE</code> · texto <code>#6F7276</code> · Poppins SemiBold 11px · mismo padding y radio · la foto lleva velo blanco al 55% (<code>rgba(255,255,255,0.55)</code>), no conversión a blanco y negro.</p>
@@ -223,7 +223,7 @@ code { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: .88em;
   <span class="sev should">Conviene corregir</span>
   <div>
     <h3>Las tarjetas perdieron el aforo y el conteo de reseñas</h3>
-    <p>En el diseño cada tarjeta trae “hasta [350] invitados” y la calificación con su conteo (“4.9 (23)”) — dos de los tres datos con los que una pareja filtra venues. En vivo solo aparecen ciudad + número de calificación.</p>
+    <p>En el diseño cada tarjeta trae “hasta [350] invitados” y la calificación con su conteo (“4.9 (23)”) - dos de los tres datos con los que una pareja filtra venues. En vivo solo aparecen ciudad + número de calificación.</p>
     <p class="fix">Agregar el aforo (“hasta N invitados”) a la línea de datos y el conteo de reseñas junto a la calificación.</p>
   </div>
 </div>
@@ -232,7 +232,7 @@ code { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: .88em;
   <span class="sev polish">Detalle fino</span>
   <div>
     <h3>Resultados conserva el header completo del Home</h3>
-    <p>El diseño le da a Resultados un header más ligero — logo con el sello “VENUES · MÉXICO”, “Explorar venues” subrayado como activo y sin la barra de categorías. En vivo se reutiliza todo el header del Home, incluidas las pestañas “Venue only / Concept venues / Beyond the venue”.</p>
+    <p>El diseño le da a Resultados un header más ligero - logo con el sello “VENUES · MÉXICO”, “Explorar venues” subrayado como activo y sin la barra de categorías. En vivo se reutiliza todo el header del Home, incluidas las pestañas “Venue only / Concept venues / Beyond the venue”.</p>
     <p class="fix">Opcional: adoptar el header ligero de Resultados; si las pestañas se quedan, marcar el estado activo de forma consistente.</p>
   </div>
 </div>
@@ -256,7 +256,7 @@ code { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: .88em;
   <span class="sev should">Conviene corregir</span>
   <div>
     <h3>“The venue” es un volcado de contenido crudo, no la descripción curada</h3>
-    <p>El diseño pide una descripción curada de tres líneas. En vivo se pegó la ficha completa del proveedor: listas de “RENTAL INCLUDES / RENTAL DOES NOT INCLUDE” que duplican (y contradicen) el módulo de checklist de arriba, más detalles de contrato sin estructura — depósito en garantía de $25,000 MXN, horas extra hasta las 3:00 AM, dos días de montaje. Además hay un typo: “Basic <b>lightning</b> in the rectangular ballrooms” → <b>lighting</b>.</p>
+    <p>El diseño pide una descripción curada de tres líneas. En vivo se pegó la ficha completa del proveedor: listas de “RENTAL INCLUDES / RENTAL DOES NOT INCLUDE” que duplican (y contradicen) el módulo de checklist de arriba, más detalles de contrato sin estructura - depósito en garantía de $25,000 MXN, horas extra hasta las 3:00 AM, dos días de montaje. Además hay un typo: “Basic <b>lightning</b> in the rectangular ballrooms” → <b>lighting</b>.</p>
     <p class="fix">Recortar la prosa a la descripción curada; mover depósito/horas extra/montaje al módulo estructurado de incluidos o a un bloque de “Bueno saberlo”; corregir el typo.</p>
   </div>
 </div>
@@ -265,7 +265,7 @@ code { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: .88em;
   <span class="sev should">Conviene corregir</span>
   <div>
     <h3>La fila del título perdió sus datos clave</h3>
-    <p>Diseño: “★ 4.9 · 12 reseñas | Huaxtla, Jalisco · a 30 min de Guadalajara | Hasta [300] invitados | Capilla propia”. En vivo solo aparece “★ 4.9 Zona Centro Guadalajara, Jalisco” — sin conteo de reseñas, sin aforo, sin el atributo distintivo.</p>
+    <p>Diseño: “★ 4.9 · 12 reseñas | Huaxtla, Jalisco · a 30 min de Guadalajara | Hasta [300] invitados | Capilla propia”. En vivo solo aparece “★ 4.9 Zona Centro Guadalajara, Jalisco” - sin conteo de reseñas, sin aforo, sin el atributo distintivo.</p>
     <p class="fix">Restaurar la fila completa: calificación · reseñas | ubicación · distancia | aforo | atributo distintivo.</p>
   </div>
 </div>
@@ -307,7 +307,7 @@ code { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: .88em;
   <span class="sev should">Conviene corregir</span>
   <div>
     <h3>La línea de tiempo de pagos perdió el monto de la firma</h3>
-    <p>Diseño: “A la firma · 20% también en Voguex — <b>$40,000</b>” (calculado para el venue). En vivo: “At signing · 20% also on Voguex” sin monto — para este venue debería decir <b>— $26,000</b>. Todo el punto de este módulo es “sin sorpresas”; mostrar el número real es la promesa.</p>
+    <p>Diseño: “A la firma · 20% también en Voguex - <b>$40,000</b>” (calculado para el venue). En vivo: “At signing · 20% also on Voguex” sin monto - para este venue debería decir <b>- $26,000</b>. Todo el punto de este módulo es “sin sorpresas”; mostrar el número real es la promesa.</p>
     <p class="fix">Calcular y mostrar el monto del 20% en el tercer punto, igual que el primero ya lo hace con el 10%.</p>
   </div>
 </div>
@@ -316,7 +316,7 @@ code { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: .88em;
   <span class="sev should">Conviene corregir</span>
   <div>
     <h3>El bloque internacional perdió el estimado en USD</h3>
-    <p>El diseño cierra la tarjeta “¿Planeas tu boda desde fuera de México?” con “≈ $[X,XXX] USD por esta fecha, IVA incluido”. En vivo esa línea se cortó — y es justo la que las parejas internacionales necesitan.</p>
+    <p>El diseño cierra la tarjeta “¿Planeas tu boda desde fuera de México?” con “≈ $[X,XXX] USD por esta fecha, IVA incluido”. En vivo esa línea se cortó - y es justo la que las parejas internacionales necesitan.</p>
     <p class="fix">Agregar la conversión aproximada a USD para la fecha elegida (claramente marcada como aproximada).</p>
   </div>
 </div>
@@ -329,7 +329,7 @@ code { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: .88em;
   <div>
     <h3>El selector de ciudades no se cierra al elegir una opción</h3>
     <div class="shot" style="max-height:340px; margin:8px 0; max-width:420px;"><img src="shots/live-mobile-cities.webp" alt="Selector de ciudades abierto en el build móvil"></div>
-    <p>Al abrir “Dónde”, la lista de ciudades queda abierta después de picar una opción y hay que cerrarla a mano. Acordado con el equipo: al picar una opción, el card se cierra y la selección se aplica. Detalle extra: “San miguel de allende” va sin mayúsculas — debe ser “San Miguel de Allende”.</p>
+    <p>Al abrir “Dónde”, la lista de ciudades queda abierta después de picar una opción y hay que cerrarla a mano. Acordado con el equipo: al picar una opción, el card se cierra y la selección se aplica. Detalle extra: “San miguel de allende” va sin mayúsculas - debe ser “San Miguel de Allende”.</p>
     <p class="fix">Tap en una opción → se aplica la selección y se cierra el card; corregir las mayúsculas de los nombres de ciudad.</p>
   </div>
 </div>
@@ -339,7 +339,7 @@ code { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: .88em;
   <div>
     <h3>Ficha de venue móvil: los datos clave están sobre la foto y vienen incompletos</h3>
     <div class="shot" style="max-height:380px; margin:8px 0; max-width:300px;"><img src="shots/fig-m-ficha.png" alt="Ficha de venue móvil en el diseño de Figma"></div>
-    <p>En el build la calificación y la ubicación van montadas sobre la foto del hero (“★ 4.7 · 1157 reseñas / Jocotepec, Jalisco”). En el diseño (frame “04 · Ficha de venue” de CAPA 2) la galería queda limpia — solo el contador “1/11” — y los datos van debajo del título, completos: “★ 4.9 · 12 reseñas · Huaxtla · 30 min de GDL / Hasta 300 inv. / Hacienda · 1 de 9 venues en Voguex · ver todos”. En vivo faltan el aforo, la distancia y el tipo de venue.</p>
+    <p>En el build la calificación y la ubicación van montadas sobre la foto del hero (“★ 4.7 · 1157 reseñas / Jocotepec, Jalisco”). En el diseño (frame “04 · Ficha de venue” de CAPA 2) la galería queda limpia - solo el contador “1/11” - y los datos van debajo del título, completos: “★ 4.9 · 12 reseñas · Huaxtla · 30 min de GDL / Hasta 300 inv. / Hacienda · 1 de 9 venues en Voguex · ver todos”. En vivo faltan el aforo, la distancia y el tipo de venue.</p>
     <p class="fix">Mover la fila de datos debajo del título como en el diseño y completarla (reseñas · ubicación · distancia · aforo · tipo). La galería con miniaturas y “+6 fotos” ya está bien.</p>
   </div>
 </div>
@@ -348,7 +348,7 @@ code { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: .88em;
   <span class="sev should">Conviene corregir</span>
   <div>
     <h3>Ficha móvil: “El lugar” repite el volcado de contenido y se contradice otra vez</h3>
-    <p>Igual que en desktop, la descripción trae la ficha cruda del proveedor: “Capacidad salón: de 80 a 400 personas” en medio del texto y una lista “Incluye:” que duplica el módulo “Tu renta incluye” de abajo — con items que no cuadran entre sí: la lista dice “Valet de baños”, “Coordinador” y “Suite nupcial”; el checklist dice “Valet parking” y “Supervisor general del evento”, y la suite nupcial no aparece. El diseño pide solo la descripción curada de 4-5 líneas.</p>
+    <p>Igual que en desktop, la descripción trae la ficha cruda del proveedor: “Capacidad salón: de 80 a 400 personas” en medio del texto y una lista “Incluye:” que duplica el módulo “Tu renta incluye” de abajo - con items que no cuadran entre sí: la lista dice “Valet de baños”, “Coordinador” y “Suite nupcial”; el checklist dice “Valet parking” y “Supervisor general del evento”, y la suite nupcial no aparece. El diseño pide solo la descripción curada de 4-5 líneas.</p>
     <p class="fix">Una sola fuente de verdad: descripción curada en “El lugar”, inclusiones únicamente en “Tu renta incluye” (reconciliadas contra el contrato del venue), y el aforo en la fila de datos del título.</p>
   </div>
 </div>
@@ -367,7 +367,7 @@ code { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: .88em;
   <div>
     <h3>Checkout móvil: se apiló el layout de desktop en lugar del diseño móvil</h3>
     <div class="shot" style="max-height:380px; margin:8px 0; max-width:300px;"><img src="shots/fig-m-apartar.png" alt="Checkout de apartar móvil en el diseño de Figma"></div>
-    <p>El build reusa el layout de desktop en columna: header completo (logo + ES|EN + “Pago protegido con Stripe” roto en dos líneas), luego la línea de tiempo larga de pagos y el bloque internacional, y hasta después el Resumen y los campos. El diseño móvil (frame “06 · Apartar”) es mucho más corto: header compacto “← Asegura tu fecha · [venue] · 🔒 Stripe”, el Resumen inmediatamente después de la tarjeta del venue — “Total hoy (10%)” con la nota que ya incluye el monto del 20% (“…pago del 20% restante ($40,000)”) — y los campos agrupados bajo “Pago seguro” y “Tus datos”.</p>
+    <p>El build reusa el layout de desktop en columna: header completo (logo + ES|EN + “Pago protegido con Stripe” roto en dos líneas), luego la línea de tiempo larga de pagos y el bloque internacional, y hasta después el Resumen y los campos. El diseño móvil (frame “06 · Apartar”) es mucho más corto: header compacto “← Asegura tu fecha · [venue] · 🔒 Stripe”, el Resumen inmediatamente después de la tarjeta del venue - “Total hoy (10%)” con la nota que ya incluye el monto del 20% (“…pago del 20% restante ($40,000)”) - y los campos agrupados bajo “Pago seguro” y “Tus datos”.</p>
     <p class="fix">Implementar la estructura móvil del diseño: header compacto, Resumen arriba con el monto del 20% en la nota, campos agrupados. Menos scroll antes de poder pagar.</p>
   </div>
 </div>
@@ -376,7 +376,7 @@ code { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: .88em;
   <span class="sev polish">Detalle fino</span>
   <div>
     <h3>Resultados móvil: falta el control de ordenar</h3>
-    <p>La vista móvil de resultados solo muestra “Filtros”; el control “Ordenar: Recomendados” del diseño desktop no existe en móvil. Los corchetes (“[7] disponibles”, “★ [0]”) y la falta de aforo/reseñas en las tarjetas ya están cubiertos en los hallazgos globales y de Resultados — aplican igual en móvil.</p>
+    <p>La vista móvil de resultados solo muestra “Filtros”; el control “Ordenar: Recomendados” del diseño desktop no existe en móvil. Los corchetes (“[7] disponibles”, “★ [0]”) y la falta de aforo/reseñas en las tarjetas ya están cubiertos en los hallazgos globales y de Resultados - aplican igual en móvil.</p>
     <p class="fix">Agregar el control de ordenar junto a Filtros (o dentro del panel de filtros).</p>
   </div>
 </div>
